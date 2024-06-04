@@ -1,5 +1,7 @@
 @ignore
 Feature: Create multiple todos (Reusable)
+  # Parameter:
+  # todosTable
 
   Background:
     * url baseUrl
@@ -7,16 +9,17 @@ Feature: Create multiple todos (Reusable)
 
   Scenario: Create a single todo
     * match __arg == todosTable[__loop]
-    * print "=== Create a single todo for entry: ", __arg
-    Given path '/todos'
-    And request
+    * def finalTitle = title + ' - ' +  additional1 + ' - ' + additional2
+    * def payload =
     """
     {
-      "userId": #{userId},
-      "id": #{id},
-      "title": #{title},
-      "completed": #{completed}
+      "userId": #(userId),
+      "id": #(id),
+      "title": #(finalTitle),
+      "completed": #(completed)
     }
     """
+    Given path '/todos'
+    And request payload
     When method post
     Then status 201

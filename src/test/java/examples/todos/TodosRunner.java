@@ -8,5 +8,4 @@ class TodosRunner {
   Karate testTodos() {
     return Karate.run("todos").relativeTo(getClass());
   }
-
 }
