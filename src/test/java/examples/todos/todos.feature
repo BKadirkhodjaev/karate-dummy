@@ -9,7 +9,8 @@ Feature: Todos
     * def globalTodoTitle = 'test title please ignore 1001 (from variables)'
     * def globalTodoCompleted = false
 
-  @ignore
+    * def uuid = function() { return java.util.UUID.randomUUID() + '' }
+
   @Positive
   Scenario: Create todos
     * def titleAdditional1 = 'title-additional-1'
@@ -22,10 +23,10 @@ Feature: Todos
       | globalTodoUserId | globalTodoId | globalTodoTitle                 | globalTodoCompleted |
       | 1002             | 10002        | 'test title please ignore 1002' | true                |
       | 1003             | 10003        | 'test title please ignore 1003' | true                |
+
     * print "=== Prepared a todos table: ", todosTable
 
     * def result = call read('reusable/create_todo.feature') todosTable
-
     * def createdTodos = $result[*].response
 
     * print "=== Created todos: ", createdTodos
@@ -35,10 +36,13 @@ Feature: Todos
     * match Number(createdTodos.length) == Number(todosTable.length)
 
   @Positive
-  Scenario: Create todos (single
+  Scenario: Create todos (single)
     * def titleAdditional1 = 'title-additional-1'
     * def titleAdditional2 = 'title-additional-2'
     * def titleOptional = 123
+    * def generatedId = karate.get('id', uuid())
+
+    * print 'Generated id: ', generatedId
 
     * table todosTable
       | userId           | id           | title                           | completed           |
@@ -46,6 +50,7 @@ Feature: Todos
       | globalTodoUserId | globalTodoId | globalTodoTitle                 | globalTodoCompleted |
       | 1002             | 10002        | 'test title please ignore 1002' | true                |
       | 1003             | 10003        | 'test title please ignore 1003' | true                |
+
     * print "=== Prepared a todos table: ", todosTable
 
     * def createTodo =
@@ -62,6 +67,7 @@ Feature: Todos
         }
       }
       """
+
     * def v = call createTodo todosTable
 
   @ignore
@@ -74,6 +80,7 @@ Feature: Todos
       | 1  | 'Mike'  |
       | 2  | 'Steve' |
       | 3  | 'Kane'  |
+
     * print "=== Prepared json array: ", jsonArray
     * print '=== Initial json Object: ', jsonObject
 

@@ -14,8 +14,10 @@ Feature: Create multiple todos (Reusable)
     * print "=== Arg: ", __arg
     * print "=== Additional title 1: ", titleAdditional1
     * print "=== Additional title 2: ", titleAdditional2
+
     * if (titleOptional != -1) karate.log("[direct print] === Optional title: ", titleOptional)
     * if (titleOptional != -1) karate.set('titleOptionalDirect', titleOptional)
+
     * print titleOptionalDirect
 
     * match __arg == todosTable[__loop]
